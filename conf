@@ -1,0 +1,26 @@
+#!/bin/bash -ex
+install()
+{
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -y \
+        -o DPkg::Options::=--force-confdef \
+        -o DPkg::Options::=--force-confold \
+        install $@
+}
+
+# Rename the host
+HOSTNAME=ree
+echo "$HOSTNAME" > /etc/hostname
+sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
+
+# Use mirrors.163.com as the default apt repository
+rm -f /etc/apt/sources.list.d/*.list
+apt-get update
+
+# Install git and curl
+install git-core curl
+
+# Install ree and set it as default
+install build-essential bison openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev
+rvm install ree
+rvm use ree --default
