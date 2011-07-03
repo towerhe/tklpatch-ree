@@ -1,0 +1,3 @@
+[submodule "patches/1_rvm"]
+	path = patches/1_rvm
+	url = http://github.com/towerhe/tklpatch-rvm.git
